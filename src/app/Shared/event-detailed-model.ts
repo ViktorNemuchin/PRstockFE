@@ -4,7 +4,7 @@ export class EventDetailedModel {
   EventDescription: string;
   EventUrl: string;
   StartDate: string;
-  EndDate: string;
+  EndDate: Date;
   Category: string;
   EventType: string;
   RespPerson: string;
@@ -18,4 +18,5 @@ Type: string;
 Quantity: number;
 State: number;
 QuantityTaken: number;
+Company: string;
 }

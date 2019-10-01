@@ -4,3 +4,7 @@ export class TypeModel {
   Category: string;
   Quantity: number;
 }
+
+export class PostTypeModel {
+  TypeName: string;
+}

@@ -11,7 +11,8 @@ import {Location} from '@angular/common';
   providers: [GetOperationsService]
 })
 export class ProductscatComponent implements OnInit {
-  products: ProductModel[];
+  public products: ProductModel[];
+  public searchText: string;
   cat: string;
   ErrorMessage: any;
   constructor(private getOpService: GetOperationsService,

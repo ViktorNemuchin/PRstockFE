@@ -1,4 +1,4 @@
-import { EventDetailedModel } from './event-detailed-model';
+import { EventDetailedModel, ProductBriefModel } from './event-detailed-model';
 import { ProductModel } from './product-model';
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
@@ -28,6 +28,9 @@ ListPrProducts: ProductModel[];
   }
   getProductsByCat(Category: string): Observable<ProductModel[]> {
     return this.http.get<ProductModel[]>('http://voz.dsr-corporation.com:58281/api/PrProduct/productsbycat/' + Category).pipe();
+  }
+  getAllProduct(): Observable<ProductBriefModel[]> {
+    return this.http.get<ProductBriefModel[]>('http://voz.dsr-corporation.com:58281/api/PrProduct/AllProducts');
   }
 }
 

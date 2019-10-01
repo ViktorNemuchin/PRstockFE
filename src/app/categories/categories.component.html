@@ -1,12 +1,20 @@
-<h1 class="mt-5"> Category of product</h1>
+<div *ngIf ="Categories else noCategory">
+<h1 class="mt-5 text-right"> Product Category</h1>
 <hr class ="mt-5 mb-5">
-<table class="table table-bordered table-hover  text-center">
+<table class="table table-hover text-center">
   <thead class="table-primary">
     <tr>
       <th class ="mr-1">Category</th>
     </tr>
   </thead>
+  <tbody>
   <tr *ngFor="let cat of Categories" class = "text-align-center">
     <td routerLink='/productscat/{{cat.CategoryName}}'>{{cat.CategoryName}} </td>
   </tr>
+</tbody>
 </table>
+</div>
+<ng-template #noCategory>
+  <div class="fa-2x text-muted mt-5"> <i class="fas fa-spinner fa-spin"></i>Loading..... Please wait</div>
+</ng-template>
+

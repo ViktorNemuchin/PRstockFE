@@ -1,3 +1,4 @@
+import { AllProductsComponent } from './all-products/all-products.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { ProductscatComponent } from './productscat/productscat.component';
 import { AddNewEventComponent } from './add-new-event/add-new-event.component';
@@ -9,6 +10,8 @@ import { ProductsComponent } from './products/products.component';
 import { TypesComponent } from './types/types.component';
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {AddCompanyComponent} from './add-company/add-company.component';
+
 
 
 
@@ -22,7 +25,10 @@ const routes: Routes = [
 {path: 'event/:id', component: DetailedEventComponent, pathMatch: 'full'},
 {path: 'AddProduct', component: AddProductComponent, pathMatch: 'full'},
 {path: 'AddEvent/:id', component: AddEventComponent, pathMatch: 'full'},
-{path: 'AddEvent', component: AddNewEventComponent, pathMatch: 'full' }
+{path: 'AddEvent', component: AddNewEventComponent, pathMatch: 'full' },
+{path: 'AddCompany', component: AddCompanyComponent, pathMatch: 'full'},
+{path: 'products', component: AllProductsComponent, pathMatch: 'full'}
+
 ];
 
 @NgModule({

@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { GetEmployee, GetCategory, GetProducts } from './../Shared/get-enum-model';
 import { GetEnumServiceService,  } from './../Shared/get-enum-service.service';
@@ -7,6 +9,8 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@ang
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbDateNativeAdapter, NgbDatepicker, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 import {NgSelectModule, NgOption} from '@ng-select/ng-select';
+import {debounceTime, map} from 'rxjs/operators';
+
 
 
 class AddEventHandler {
@@ -39,6 +43,7 @@ export class AddNewEventComponent implements OnInit {
     private evfb: FormBuilder,
     private postOperationService: PostOperationsService,
     private rooter: Router,
+    private location: Location,
     private getenumservice: GetEnumServiceService) {
       this.GetEnumEmployee();
       this.GetEnumProducts();
@@ -47,13 +52,12 @@ export class AddNewEventComponent implements OnInit {
 
   ngOnInit() {
     this.Eventtypes = ['Invoice', 'Taken'];
-    console.log(this.Eventtypes);
     this.GetEnumProducts();
     this.eventForm = this.evfb.group({
-      'EventName': [''],
-      'EventDescription': [''],
-      'EndDate': [''],
-      'EventUri': [''],
+      'EventName': [null, Validators.required],
+      'EventDescription': [null],
+      'EndDate': [null],
+      'EventUri': [null],
       'EventType': null,
       'PersonId': null,
       'Products': this.evfb.array([])
@@ -62,13 +66,21 @@ export class AddNewEventComponent implements OnInit {
   OnSubmit() {
     this.Submitted = true;
     this.PrEvent = this.eventForm.value;
-    console.log(this.PrEvent);
-    console.log(this.getproducts());
-    this.postOperationService.postNewEvent(this.PrEvent).subscribe((res) => {this.onSuccess(); });
+    this.postOperationService.postNewEvent(this.PrEvent).subscribe(
+      (res) => {
+        this.onSuccess(); },
+      (err) => {
+        this.onError();
+      });
   }
   private onSuccess() {
+    this.Submitted = false;
     this.EventStat.Status = 'Ok';
-    this.rooter.navigate(['/types']);
+    this.rooter.navigate(['/categories']);
+ }
+ private onError() {
+   this.Submitted = false;
+   this.EventStat.Status = 'fail';
  }
 getproducts(): FormArray {
   return this.eventForm.get('Products') as FormArray;
@@ -92,6 +104,9 @@ createProduct(): FormGroup {
    Category: null,
   });
 }
+getBack() {
+  this.location.back();
+ }
 
 
   GetEnumEmployee() {
@@ -103,5 +118,14 @@ createProduct(): FormGroup {
   GetEnumProducts() {
     this.getenumservice.getEnumProducts().subscribe(data => {this.EnumProducts = data; console.log(data); } );
   }
+
+  search = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      map(term => term === '' ? []
+        : this.EnumProducts.filter(v => v.Name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    )
+
+  formatter = (x: {Name: string}) => x.Name;
 
 }

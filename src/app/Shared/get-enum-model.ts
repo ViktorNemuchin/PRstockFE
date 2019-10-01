@@ -2,6 +2,7 @@ export class GetCategory {
 CategoryViewModelId: number;
 CategoryName: string;
 }
+
 export class GetType {
 TypeViewModelId: number;
 TypeName: string;

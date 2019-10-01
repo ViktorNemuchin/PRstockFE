@@ -1,3 +1,4 @@
+import { UploadService } from './../Shared/upload.service';
 import { ImageServiceService } from './../Shared/image-service.service';
 import { PostOperationsService } from './../Shared/post-operations.service';
 import { PostProductModel } from './../Shared/post-product-model';
@@ -7,17 +8,11 @@ import { Component, OnInit } from '@angular/core';
 import {GetCategory, GetType, GetCompany, GetEmployee} from '../Shared/get-enum-model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbCalendar, NgbDatepicker, NgbDateAdapter, NgbDateStruct, NgbDateNativeAdapter} from '@ng-bootstrap/ng-bootstrap';
-import { formatDate, DatePipe } from '@angular/common';
+import { formatDate, DatePipe, Location } from '@angular/common';
+import { PostTypeModel } from '../Shared/type-model';
+import {debounceTime, map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
-
-
-
-class ImageSnippet {
-  pending = false;
-  status = 'init';
-
-  constructor(public src: string, public file: File) {}
-}
 
 
 @Component({
@@ -29,24 +24,25 @@ class ImageSnippet {
     {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }]
 })
 export class AddProductComponent implements OnInit {
-  selectedFile: ImageSnippet;
   Types: GetType[];
+  DefaulType: GetType;
+  Loading = false;
   Categories: GetCategory[];
   Companies: GetCompany[];
   Employees: GetEmployee[];
-  Product: PostProductModel;
+  public Product: PostProductModel;
   Pathsrc;
   Submitted = false;
     productForm = this.prfb.group({
       ProductName: ['', Validators.required],
       Detail: [''],
-      TypeId: this.Types,
+      TypeId: [''],
       Price: ['', Validators.required],
       Quantity: ['', Validators.required],
       PictureUrl: [''],
       TemplateUrl: [''],
       ProductState: [''],
-      CompanyId: this.Companies,
+      CompanyId: [''],
       event: this.prfb.group({
         EventName: ['Invoice'],
         EventDescription: [''],
@@ -60,7 +56,6 @@ export class AddProductComponent implements OnInit {
       }),
   });
   ngOnInit() {
-    this.GetEnumType();
     this.GetEnumCategory();
     this.GetEnumCompany();
     this.GetEnumEmployee();
@@ -68,11 +63,14 @@ export class AddProductComponent implements OnInit {
   constructor (
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private getoperationservice: GetEnumServiceService,
     private prfb: FormBuilder,
     private postoperationservice: PostOperationsService,
-    private imageService: ImageServiceService
-    ) { }
+    public uploadService: UploadService
+    ) {
+      this.GetEnumType();
+     }
 
    GetEnumType() {
      this.getoperationservice.getEnumType().subscribe(
@@ -81,66 +79,72 @@ export class AddProductComponent implements OnInit {
       });
    }
    GetEnumCategory() {
-     this.getoperationservice.getEnumCategory().subscribe(data => {this.Categories = data; console.log(this.Categories); });
+     this.getoperationservice.getEnumCategory().subscribe(data => {this.Categories = data; });
    }
    GetEnumCompany() {
-     this.getoperationservice.getEnumCompany().subscribe(data => {this.Companies = data; console.log(this.Companies); } );
+     this.getoperationservice.getEnumCompany().subscribe(data => {this.Companies = data; } );
      console.log(this.Companies);
    }
    GetEnumEmployee() {
-     this.getoperationservice.getEnumEmployees().subscribe(data => {this.Employees = data; console.log(this.Employees); } );
+     this.getoperationservice.getEnumEmployees().subscribe(data => {this.Employees = data; } );
+   }
+   getBack() {
+    this.location.back();
    }
    onSubmit(productForm) {
-    this.Pathsrc = this.selectedFile.file.name;
+    if (this.uploadService.selectedFile !== undefined) {
+    this.Pathsrc = this.uploadService.selectedFile.file.name;
+    } else {
+      this.Pathsrc = 'default.png';
+    }
     this.Submitted = true;
+    const ChosenType: GetType = this.productForm.get('TypeId').value;
        const url = 'http://voz.dsr-corporation.com:58281/Uploads/Images/';
        this.Product = this.productForm.value;
        this.Product.PictureUrl = url + this.Pathsrc;
-       console.log(this.Product);
+       console.log(ChosenType);
+       this.Product.TypeId = ChosenType.TypeViewModelId;
        this.postoperationservice.postProduct(this.Product).subscribe(
         (res) => {
           this.onAddSuccess();
         },
         (err) => {
-          this.onError();
+          this.onAddError();
         }
        );
   }
 
   private onAddSuccess() {
+    this.Loading = false;
     this.router.navigate(['/types']);
-    console.log('Success');
   }
-  private onSuccess() {
-    this.selectedFile.pending = false;
-    this.selectedFile.status = 'ok';
+  private onAddError() {
+    this.Loading = false;
+    console.log(this.Loading);
+    this.Submitted = false;
   }
-
-   private onError() {
-    this.selectedFile.pending = false;
-    this.selectedFile.status = 'fail';
-    this.selectedFile.src = '';
+  processFile1(imageInput: any) {
+    this.uploadService.processFile(imageInput);
   }
-
-  processFile(imageInput: any) {
-    const file: File = imageInput.files[0];
-    const reader = new FileReader();
-    reader.addEventListener('load', (event: any) => {
-
-      this.selectedFile = new ImageSnippet(event.target.result, file);
-
-      this.selectedFile.pending = true;
-      this.imageService.uploadImage(this.selectedFile.file).subscribe(
-        (res) => {
-          this.onSuccess();
-        },
-        (err) => {
-          this.onError();
-        });
-    });
-
-    reader.readAsDataURL(file);
+  AddType(name: string) {
+    this.Loading = true;
+    const Type = new PostTypeModel;
+    Type.TypeName = name;
+    this.postoperationservice.postType(Type).subscribe();
+    setTimeout(() => {this.GetEnumType(); this.Loading = false; }, 5000 );
   }
+  compareFn(c1: GetType, c2: GetType): boolean {
+    return c1 && c2 ? c1.TypeViewModelId === c2.TypeViewModelId : c1 === c2;
+  }
+  search = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      map(term => term === '' ? []
+        : this.Types.filter(v => v.TypeName.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    )
+
+  formatter = (x: {TypeName: string}) => x.TypeName;
+
 }
 
 

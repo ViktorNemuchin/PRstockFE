@@ -1,10 +1,12 @@
-<div class ="row mt-5">
+<div class ="row mt-5" *ngIf = "Event else noEvent">
   <div class = "col-xl-5 col-lg-5 col-md-12 mb-3 ">
     <div class="row">
-      <div class="col-sm-12 col-md-10"><h3 class="text-muted">{{Event.EventName}}</h3></div>
       <div class="col-sm-12 col-md-2">
+          <button class="btn btn-primary" (click)='getBack()'><span class="fas fa-angle-double-left"></span></button>
+      </div>
+      <div class="col-sm-12 col-md-10">
         <div class = "float-right">
-          <a class="btn btn-primary" routerLink='/types'><span class="fas fa-angle-double-left"></span></a>
+            <h3 class="text-muted">{{Event.EventName}}</h3>
         </div>
       </div>
     </div>
@@ -27,9 +29,9 @@
              </div>
           </li>
           <li class="list-group-item">
-            <div class ="row" *ngIf="Event.EventUrl != null, else noLink">
+            <div class ="row" *ngIf="Event.EventUrl != '', else noLink">
               <div class="col-lg-4 col-md-5 text-muted"><p><b>Website</b></p></div>
-              <div class = "col-xl-5 col-md-6 offset-xl-3 offset-md-1"><a href ="{{Event.EventUrl}}"> <span class = "fas fa-desktop"></span>  Link</a></div>
+              <div class = "col-xl-5 col-md-6 offset-xl-3 offset-md-1"><a href ="{{Event.EventUrl}}"> <span class = "fas fa-link"></span>  Link</a></div>
             </div>
             <ng-template #noLink>
               <div class = "row">
@@ -50,7 +52,14 @@
    </div>
   </div>
  <div class = "col-xl-7 col-lg-7 col-md-12">
-   <h3 class="text-muted">Event History</h3>
+   <div class ="row">
+     <div class ="col-sm-12 col-md-10">
+        <h3 class="text-muted">Products</h3>
+     </div>
+     <div class="col-sm-12 col-md-2 justify-right">
+        <a class= "btn btn-primary bg" routerLink='/AddEvent'>New event</a>
+     </div>
+   </div>
      <table class="table table-bordered table-hover ">
        <thead class="table-primary">
          <tr>
@@ -68,10 +77,8 @@
            <td class="align-middle text-center" routerLink='/product/{{product.PrProductModelBriefId}}'><p><span class="badge badge-success">{{product.QuantityTaken}}</span></p></td>
          </tr>
        </table>
-       <div class ="row">
-         <div class = "col-md-2 offset-md-9">
-           <a class= "btn btn-primary bg" routerLink='/AddEvent'>New event</a>
-         </div>
-       </div>
  </div>
  </div>
+ <ng-template #noEvent>
+  <div class="fa-2x text-muted mt-5"> <i class="fas fa-spinner fa-spin"></i>Loading..... Please wait</div>
+</ng-template>

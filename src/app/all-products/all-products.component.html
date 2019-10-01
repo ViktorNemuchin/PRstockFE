@@ -1,0 +1,43 @@
+<div class="row mt-5">
+    <div class ="col-2">
+        <button (click)='getBack()' class ='btn btn-primary align-middle'><span class="fas fa-angle-double-left"></span></button>
+      </div>
+  <div class = "col-10 text-right justify-right">
+        <h1> Products List </h1>
+    </div>
+  </div>
+  <div class = "row mt-2" >
+      <div class="col-3">
+        <div class = "form-group">
+            <input type='text' [(ngModel)]='searchText' PlaceHolder="Search" class="form-control">
+        </div>
+      </div>
+      <div class="col-3 offset-6 text-right">
+          <a class="btn btn-primary" routerLink='/AddProduct'>New Product</a>
+      </div>
+    </div>
+<div class= "row">
+  <div class = "col-md-12" >
+      <hr class ="mt-2 mb-5">
+      <table class="table table-bordered table-hover  text-center" *ngIf ="products else noProducts">
+          <thead class="table-primary mb-1">
+            <tr>
+              <th class="text-center"><p>Name</p></th>
+              <th class="text-center" ><p>Type</p></th>
+              <th class="text-center"><p>Company</p></th>
+              <th class="text-center"><p>Quantity</p></th>
+            </tr>
+          </thead>
+            <tr *ngFor="let product of products | filter:searchText" class="mb-1">
+            <td class="text-center" routerLink='/product/{{product.PrProductModelBriefId}}'>{{product.Name}} </td>
+            <td class="text-center"  routerLink='/product/{{product.PrProductModelBriefId}}'> {{product.Type}}</td>
+            <td class="text-center" routerLink ='/product/{{product.PrProductModelBriefId}}'>{{product.Company}}</td>
+            <td class="text-center" *ngIf="product.Quantity >= product.State, else warning" routerLink='/product/{{product.PrProductModelBriefId}}'><span class="badge badge-primary badge-pill">{{product.Quantity}}</span></td>
+            <ng-template #warning> <td class="text-center" routerLink='/product/{{product.PrProductModelBriefId}}'><span class="badge badge-danger badge-pill">{{product.Quantity}}</span></td>  </ng-template>
+            </tr>
+        </table>
+        <ng-template #noProducts>
+          <div class="fa-2x text-muted mt-5"> <i class="fas fa-spinner fa-spin"></i>Loading..... Please wait</div>
+        </ng-template>
+  </div>
+</div>

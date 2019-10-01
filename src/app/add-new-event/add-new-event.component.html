@@ -57,7 +57,6 @@
                           </option>
                         </select>
             </div>
-
                 <div class ="form-group" formArrayName = "Products">
                   <div class ="row">
                     <div class = "col-12">
@@ -113,17 +112,27 @@
                         <button (click)="AddProduct()" class = "btn btn-primary btn-lg">Add new Product</button>
                       </div>
                      </div>
-
               </div>
 
              <div *ngIf="EventStat.Status === 'failed'" class="alert alert-danger"> Fail to add event. Please try again later.</div>
              <div class="form-group mt-5">
-                <button  class= "btn btn-primary btn-lg form-control" (click)="OnSubmit()" type="submit">Submit</button>
+               <div class ="row">
+                 <div class = "col-sm-12 col-md-6" *ngIf="Submitted === false  else onAdding">
+                    <button  class= "btn btn-primary btn-lg form-control" (click)="OnSubmit()" type="submit">Ok</button>
+                 </div>
+                 <ng-template #onAdding>
+                    <div class = "col-sm-12 col-md-6">
+                        <button  class= "btn btn-primary btn-lg form-control" (click)="OnSubmit()" disabled="true" type="submit"><i class="fas fa-spinner fa-spin"></i></button>
+                     </div>
+                 </ng-template>
+                 <div class = "col-sm-12 col-md-6">
+                    <button  class= "btn btn-danger btn-lg form-control" (click)="getBack()" type="submit">Cancel</button>
+                 </div>
+               </div>
              </div>
 
       </div>
     </div>
    </form>
-   {{ eventForm.value | json}}
  </div>
 </div>

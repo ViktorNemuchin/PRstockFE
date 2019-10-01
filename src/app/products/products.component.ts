@@ -3,6 +3,10 @@ import { ProductModel } from './../Shared/product-model';
 import { GetOperationsService } from './../Shared/get-operations.service';
 import { Component, OnInit } from '@angular/core';
 import {Location} from '@angular/common';
+import { share } from 'rxjs/internal/operators/share';
+import { Observable } from 'rxjs/internal/Observable';
+import {catchError, delay, delayWhen, finalize, map, retryWhen, shareReplay, tap} from 'rxjs/operators';
+import { timer } from 'rxjs';
 
 
 
@@ -16,6 +20,7 @@ export class ProductsComponent implements OnInit {
   products: ProductModel[];
   type: string;
   ErrorMessage: any;
+  searchText: string;
   constructor(
     private getoperations: GetOperationsService,
     private route: ActivatedRoute,
@@ -29,7 +34,7 @@ export class ProductsComponent implements OnInit {
   }
 
    getproducts(type: string) {
-   this.getoperations.getProducts(type).subscribe(data => {this.products = data; });
+    return  this.getoperations.getProducts(type).subscribe(data => {this.products = data; });
    }
    getBack() {
     this.location.back();

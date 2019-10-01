@@ -5,15 +5,22 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li class = "nav-item">
+            <a class = "nav-link" routerLink="/products" routerLinkActive="active">Products</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" routerLink="/categories" routerLinkActive="active">Categories <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink ="/types" routerLinkActive="active" >Types</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink ="/AddCompany" routerLinkActive="active" >Add Supplier</a>
+          </li>
         </ul>
       </div>
       <a class="navbar-brand" href="#">Login</a>
+      <a class="nvabar-brand ml-3"><img class ="img-fluid" src="/favicon.png"></a>
     </nav>
   </header>
 <main class ="mr-1 mt-2 mb-2 ml-1">
@@ -25,7 +32,7 @@
 
 </main>
 <footer class="footer">
-    <div class="container-fluid">
-      <span class="text-muted text-right">© 2005—2019 DSR Corporation</span>
+    <div class="container-fluid text-left">
+      <span class="text-muted"><img class ="img-fluid" src="/favicon.ico"> © 2005—2019 DSR Corporation</span>
     </div>
   </footer>

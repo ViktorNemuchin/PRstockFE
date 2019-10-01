@@ -1,3 +1,66 @@
-<p>
-  add-company works!
-</p>
+<div class = "jumbotron">
+  <div class = "container">
+    <form [formGroup]=companyForm>
+       <div class="row">
+      <div class="col-md-6  offset-md-3  col-sm-12 offset-sm-0">
+        <h3> Add New Supplier </h3>
+           <div class="form-group">
+            <label>
+              <h5>Supplier </h5>
+            </label>
+            <input type='text' formControlName = "PostCompanyName" PlaceHolder="Input company name" class="form-control">
+           </div>
+           <div class="form-group">
+              <label>
+                <h5>Supplier Website</h5>
+              </label>
+              <input type='text' formControlName = "CompanyWebsite" PlaceHolder="Input company website" class="form-control">
+            </div>
+            <div formGroupName='CompanyContacts'>
+              <div class="form-group">
+                <label>
+                  <h5>First Name</h5>
+                </label>
+                <input type='text' formControlName = "FirstName" PlaceHolder="Input First Name" class="form-control">
+               </div>
+            <div class="form-group">
+              <label>
+                <h5>Last Name</h5>
+              </label>
+              <input type='text' formControlName = "LastName" PlaceHolder="Input Last Name" class="form-control">
+             </div>
+             <div class="form-group">
+              <label>
+                <h5>Mobile</h5>
+              </label>
+              <input type='text' formControlName = "Mobile" PlaceHolder="Input Mobile Number" class="form-control">
+             </div>
+             <div class="form-group">
+              <label>
+                <h5>Email</h5>
+              </label>
+              <input type='text' formControlName = "Email" PlaceHolder="Input Email" class="form-control">
+             </div>
+          </div>
+             <div *ngIf="companyState.Status === 'failed'" class="alert alert-danger"> Fail to add event. Please try again later.</div>
+             <div class="form-group mt-5">
+               <div class ="row">
+                 <div class = "col-sm-12 col-md-6" *ngIf="submitted === false else onAdding">
+                    <button  class= "btn btn-primary btn-lg form-control" (click)="onSubmit()" type="submit">Ok</button>
+                 </div>
+                 <ng-template #onAdding>
+                    <div class = "col-sm-12 col-md-6">
+                        <button  class= "btn btn-primary btn-lg form-control" (click)="onSubmit()" disabled="true" type="submit"><i class="fas fa-spinner fa-spin"></i></button>
+                     </div>
+                 </ng-template>
+                 <div class = "col-sm-12 col-md-6">
+                    <button  class= "btn btn-danger btn-lg form-control" (click)="getBack()" type="submit">Cancel</button>
+                 </div>
+               </div>
+             </div>
+
+      </div>
+    </div>
+   </form>
+ </div>
+</div>

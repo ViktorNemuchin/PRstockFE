@@ -1,3 +1,4 @@
+import { ProductPipePipe } from './Pipes/product-pipe.pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -15,11 +16,13 @@ import { AddCompanyComponent } from './add-company/add-company.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { UploadFormComponent } from './upload-form/upload-form.component';
-import { ProductPipePipe } from './pipes/product-pipe.pipe';
 import { AddNewEventComponent } from './add-new-event/add-new-event.component';
 import { DetailedEventComponent } from './detailed-event/detailed-event.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { ProductscatComponent } from './productscat/productscat.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { AllProductsComponent } from './all-products/all-products.component';
+
 
 
 
@@ -38,7 +41,8 @@ import { ProductscatComponent } from './productscat/productscat.component';
     AddNewEventComponent,
     DetailedEventComponent,
     CategoriesComponent,
-    ProductscatComponent
+    ProductscatComponent,
+    AllProductsComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +51,8 @@ import { ProductscatComponent } from './productscat/productscat.component';
     AppRoutingModule,
     ReactiveFormsModule,
     NgbModule,
-    NgSelectModule
+    NgSelectModule,
+    Ng2SearchPipeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
