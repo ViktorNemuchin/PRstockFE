@@ -1,0 +1,39 @@
+<div class="row mt-5">
+  <div class = "col-sm-10">
+      <h1> List of Products </h1>
+  </div>
+  <div class ="col-sm-2 text-right">
+    <button (click)='getBack()' class ='btn btn-primary'><span class="fas fa-angle-double-left"></span></button>
+  </div>
+</div>
+<div class= "row">
+<div class = "col-md-12" >
+    <hr class ="mt-5 mb-5">
+    <table class="table table-bordered table-hover  text-center ">
+        <thead class="table-primary mb-1">
+          <tr>
+            <th class="text-center"><p>Name</p></th>
+            <th class="text-center"><p>Category</p></th>
+            <th class="text-center d-none d-md-tablecell"><p>Type</p></th>
+            <th class="text-center"><p>Employee</p></th>
+            <th class="text-center d-none d-md-tablecell"><p>Last event</p></th>
+            <th class="text-center"><p>Quantity</p></th>
+          </tr>
+        </thead>
+          <tr *ngFor="let product of products" class="mb-1">
+          <td class="text-center" routerLink='/product/{{product.ProductViewModelId}}'>{{product.Name}} </td>
+          <td class="text-center" routerLink='/product/{{product.ProductViewModelId}}'>{{product.Category}}</td>
+          <td class="text-center d-none d-md-tablecell" routerLink='/product/{{product.ProductViewModelId}}'> {{product.Type}}</td>
+          <td class="text-center" routerLink='/product/{{product.ProductViewModelId}}'>{{product.Person}}</td>
+          <td class="text-center d-none d-md-tablecell" routerLink='/product/{{product.ProductViewModelId}}'>{{product.EventName}}</td>
+          <td class="text-center" *ngIf="product.Quantity > product.State, else warning" routerLink='/product/{{product.ProductViewModelId}}'><span class="badge badge-primary badge-pill">{{product.Quantity}}</span></td>
+          <ng-template #warning> <td class="text-center" routerLink='/product/{{product.ProductViewModelId}}'><span class="badge badge-danger badge-pill">{{product.Quantity}}</span></td>  </ng-template>
+          </tr>
+      </table>
+      <div class = "row mt-5" >
+        <div class="col-12 text-right">
+            <a class="btn btn-primary" routerLink='/AddProduct'>New Product</a>
+        </div>
+      </div>
+</div>
+</div>

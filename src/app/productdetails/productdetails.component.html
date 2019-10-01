@@ -1,0 +1,96 @@
+<div class ="row mt-5">
+ <div class = "col-xl-5 col-lg-5 col-md-12 mb-3 ">
+   <div class="row">
+     <div class="col-sm-12 col-lg-2">
+        <a class="btn btn-primary" routerLink='/products/{{product.Type}}'><span class="fas fa-angle-double-left"></span></a>
+     </div>
+     <div class="col-sm-12 col-lg-10 justify-right"><h3 class="text-muted text-right">{{product.ProductName}}</h3></div>
+   </div>
+   <div class="card">
+      <div class="d-flex justify-content-center mt-2 mb-2 mr-2 ml-2 rounded">
+          <div class="p-12">
+            <img class = "img-fluid" src="{{product.PictureUrl}}">
+          </div>
+        </div>
+
+     <div class = "card-body">
+       <h3 class="card-title text-center text-muted">{{product.Type}}</h3>
+       <ul class = "list-group-flush">
+          <li class="list-group-item">
+              <div class = "row" *ngIf="product.Quantity > product.State , else out">
+                 <div class="col-lg-4 col-md-5 text-muted"><p><b>Items</b></p></div>
+                 <div class = "col-xl-5 col-md-6 offset-xl-3 offset-md-1"><h5 class="text-center"><span class="badge badge-pill badge-success">{{product.Quantity}}</span></h5></div>
+              </div>
+              <ng-template #out>
+                 <div class = "row">
+                     <div class=" col-lg-4 col-md-5 text-muted"><p><b>Items</b></p></div>
+                     <div class = "col-xl-5 col-md-6 offset-xl-3 offset-md-1"><h5 class="text-center"><span class="badge badge-pill badge-danger">{{product.Quantity}}</span></h5></div>
+                  </div>
+              </ng-template>
+             </li>
+
+            <li class ="list-group-item">
+                <div class="row">
+                  <div class=" col-lg-4 col-md-5 text-muted">
+                    <p><b>Price</b></p>
+                  </div>
+                  <div class ="col-xl-5 col-md-6 offset-xl-3 offset-md-1"><p>{{product.Price}} RUB</p></div>
+                </div>
+              </li>
+
+         <li class="list-group-item">
+            <div class="row">
+                <div class="col-lg-4 col-md-5 text-muted"><p><b>Details</b></p></div>
+                <div class = "col-xl-5 col-md-6 offset-xl-3 offset-md-1"><p>{{product.Detail}}</p></div>
+            </div>
+         </li>
+          <li class="list-group-item">
+              <div class = "row no-gutters">
+                 <div class="col-lg-4 col-md-6 text-muted"><p><b>{{product.CompanyName}}</b></p></div>
+                 <div class = "col-xl-6 col-md-6 offset-xl-2">
+                   <ul class="list-group-flush">
+                     <li class="list-group-item">
+                       <p><b>{{product.CompanyContacts.FirstName}} {{product.CompanyContacts.LastName}}</b></p>
+                       <p><small><span class="fas fa-mobile-alt"></span> {{product.CompanyContacts.Mobile}}</small></p>
+                       <p><small><span class="far fa-envelope"></span> {{product.CompanyContacts.Email}}</small></p>
+                      </li>
+                   </ul>
+                 </div>
+              </div>
+             </li>
+        </ul>
+     </div>
+
+  </div>
+ </div>
+<div class = "col-xl-7 col-lg-7 col-md-12">
+  <h3 class="text-muted">Event History</h3>
+    <table class="table table-bordered table-hover ">
+      <thead class="table-primary">
+        <tr>
+          <th class="w-20 text-center">When</th>
+          <th class ="w-30 text-center">Purpose</th>
+          <th class ="w-20 text-center">Employee</th>
+          <th class="w-10 text-center ">Quantity</th>
+          <th class="w-20 text-center d-none d-md-table-cell">Type</th>
+        </tr>
+      </thead>
+        <tr *ngFor="let event of product.Events">
+          <td *ngIf="event.EndDate===null, else TwoDates" class="align-middle text-center" routerLink='/event/{{event.EventViewModelId}}'><p class="text-center align-middle"><small> {{event.StartDate | date }}</small></p></td>
+          <ng-template #TwoDates> <td class="text-center" routerLink='/event/{{event.EventViewModelId}}'><p><small><b>From</b> {{event.StartDate | date}} <br> <b>To</b> {{event.EndDate | date}}</small></p></td></ng-template>
+          <ng-template #Warning1> <p >From {{event.StartDate}}</p></ng-template>
+          <ng-template #Warning2> <p >From {{event.StartDate}} <br> to {{event.EndDate}} </p></ng-template>
+          <td class="align-middle text-center" routerLink='/event/{{event.EventViewModelId}}'><p><small>{{event.EventName}}<br>{{event.Category}}</small></p></td>
+          <td class="align-middle text-center" routerLink='/event/{{event.EventViewModelId}}'><p><small>{{event.RespPerson}}</small></p></td>
+          <td *ngIf="product.Quantity > product.State, else AlarmQuantity" class ="align-middle text-center" routerLink='/event/{{event.EventViewModelId}}'><p> <span class="badge badge-success">{{event.Quantity}}</span></p></td>
+          <ng-template #AlarmQuantity> <td class="text-center"><p> <span class="badge badge-danger">{{event.Quantity}}</span></p></td></ng-template>
+          <td class="align-middle text-center d-none d-md-table-cell" routerLink='/event/{{event.EventViewModelId}}'><p><small>{{event.EventType}}</small></p></td>
+        </tr>
+      </table>
+      <div class ="row">
+        <div class = "col-md-12  text-right">
+          <a class= "btn btn-primary bg" routerLink='/AddEvent'>New event</a>
+        </div>
+      </div>
+</div>
+</div>

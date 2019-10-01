@@ -1,0 +1,17 @@
+
+<h1 class="mt-5"> Types of product</h1>
+<hr class ="mt-5 mb-5">
+<table class="table table-bordered table-hover  text-center">
+  <thead class="table-primary">
+    <tr>
+      <th class ="mr-1">Type of the Product</th>
+
+    </tr>
+  </thead>
+  <tr *ngFor="let type of types" class = "text-align-center">
+    <td routerLink='/products/{{type.TypeName}}'>{{type.TypeName}} </td>
+  </tr>
+</table>
+
+
+

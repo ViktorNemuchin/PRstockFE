@@ -1,0 +1,77 @@
+<div class ="row mt-5">
+  <div class = "col-xl-5 col-lg-5 col-md-12 mb-3 ">
+    <div class="row">
+      <div class="col-sm-12 col-md-10"><h3 class="text-muted">{{Event.EventName}}</h3></div>
+      <div class="col-sm-12 col-md-2">
+        <div class = "float-right">
+          <a class="btn btn-primary" routerLink='/types'><span class="fas fa-angle-double-left"></span></a>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class = "card-body">
+        <h3 class="card-title text-center text-muted">{{Event.Category}}</h3>
+        <ul class = "list-group-flush">
+             <li class ="list-group-item">
+                 <div class="row">
+                   <div class=" col-lg-4 col-md-5 text-muted">
+                     <p><b>EventType</b></p>
+                   </div>
+                   <div class ="col-xl-5 col-md-6 offset-xl-3 offset-md-1"><p>{{Event.EventType}}</p></div>
+                 </div>
+               </li>
+          <li class="list-group-item">
+             <div class="row">
+                 <div class="col-lg-4 col-md-5 text-muted"><p><b>Details</b></p></div>
+                 <div class = "col-xl-5 col-md-6 offset-xl-3 offset-md-1"><p>{{Event.EventDescription}}</p></div>
+             </div>
+          </li>
+          <li class="list-group-item">
+            <div class ="row" *ngIf="Event.EventUrl != null, else noLink">
+              <div class="col-lg-4 col-md-5 text-muted"><p><b>Website</b></p></div>
+              <div class = "col-xl-5 col-md-6 offset-xl-3 offset-md-1"><a href ="{{Event.EventUrl}}"> <span class = "fas fa-desktop"></span>  Link</a></div>
+            </div>
+            <ng-template #noLink>
+              <div class = "row">
+                <div class="col-lg-4 col-md-5 text-muted"><p><b>Website</b></p></div>
+                <div class = "col-lg-5 col-md-6 offset-xl-3 offset-md-1"><p><span class = "far fa-eye-slash"></span> No Link</p></div>
+              </div>
+            </ng-template>
+          </li>
+          <li class="list-group-item">
+              <div class="row">
+                  <div class="col-lg-4 col-md-5 text-muted"><p><b>In Charge</b></p></div>
+                  <div class = "col-xl-5 col-md-6 offset-xl-3 offset-md-1"><p>{{Event.RespPerson}}</p></div>
+              </div>
+          </li>
+         </ul>
+      </div>
+
+   </div>
+  </div>
+ <div class = "col-xl-7 col-lg-7 col-md-12">
+   <h3 class="text-muted">Event History</h3>
+     <table class="table table-bordered table-hover ">
+       <thead class="table-primary">
+         <tr>
+           <th class="w-25 text-center">Product</th>
+           <th class="w-25 text-center d-none d-md-table-cell">Type</th>
+           <th class ="w-20 text-center">Items</th>
+           <th class="w-10 text-center ">Used</th>
+         </tr>
+       </thead>
+         <tr *ngFor="let product of Event.Products">
+           <td class="align-middle text-center" routerLink='/product/{{product.PrProductModelBriefId}}'> {{product.Name}}</td>
+           <td class="align-middle text-center d-none d-md-table-cell" routerLink='/product/{{product.PrProductModelBriefId}}'>{{product.Type}}</td>
+           <td *ngIf="product.Quantity > product.State, else AlarmQuantity" class ="align-middle text-center" routerLink='/product/{{product.PrProductModelBriefId}}'><p> <span class="badge badge-success">{{product.Quantity}}</span></p></td>
+           <ng-template #AlarmQuantity> <td class="text-center align-middle" routerLink='/product/{{product.PrProductModelBriefId}}'><p> <span class="badge badge-danger">{{product.Quantity}}</span></p></td></ng-template>
+           <td class="align-middle text-center" routerLink='/product/{{product.PrProductModelBriefId}}'><p><span class="badge badge-success">{{product.QuantityTaken}}</span></p></td>
+         </tr>
+       </table>
+       <div class ="row">
+         <div class = "col-md-2 offset-md-9">
+           <a class= "btn btn-primary bg" routerLink='/AddEvent'>New event</a>
+         </div>
+       </div>
+ </div>
+ </div>

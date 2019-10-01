@@ -1,0 +1,85 @@
+<div class = "jumbotron">
+  <div class = "container">
+    <form [formGroup]=eventForm>
+       <div class="row">
+      <div class="col-md-6  offset-md-3  col-sm-12 offset-sm-0">
+        <h3> Add Event Information </h3>
+           <div class="form-group">
+            <label>
+              <h5>Event</h5>
+            </label>
+            <input type='text' formControlName = "EventName" PlaceHolder="Input event name" class="form-control">
+           </div>
+           <div class="form-group">
+              <label>
+                <h5>Event Description</h5>
+              </label>
+              <input type='text' formControlName = "EventDescription" PlaceHolder="Input event description" class="form-control">
+            </div>
+            <label>
+              <h5>To (if necessary)</h5>
+            </label>
+           <div class="form-inline mb-3" >
+            <div class="form-group">
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd"
+                       name="dps" formControlName="EndDate" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+            <div class="form-group">
+                <label>
+                    <h5>Website</h5>
+                </label>
+              <input type='text' formControlName = "EventUri" PlaceHolder="Add Link" class="form-control">
+            </div>
+             <div class ="form-group">
+              <label>
+                <h5> Type of Event</h5>
+              </label>
+                    <select formControlName="EventType" class="form-control">
+                        <option *ngFor="let event of Eventtypes" [value]="event" class ="form-control">
+                          {{event}}
+                        </option>
+                      </select>
+            </div>
+            <div class ="form-group">
+                <label>
+                  <h5> Employee</h5>
+                </label>
+                      <select formControlName="PersonId" class="form-control">
+                          <option *ngFor="let employee of Employees" [value]="employee.EmployeeViewModelId" class ="form-control">
+                            {{employee.FirstName}} {{employee.LastName}}
+                          </option>
+                        </select>
+              </div>
+              <div class ="form-group">
+                  <label>
+                    <h5> Category </h5>
+                  </label>
+                            <select formControlName="CategoryId" class ="form-control">
+                              <option *ngFor="let category of Categories" [value]="category.CategoryViewModelId" placeholder="Choose category for the product">
+                                {{ category.CategoryName}}
+                              </option>
+                            </select>
+                </div>
+            <div class="form-group">
+              <label>
+                <h5>Quantity</h5>
+              </label>
+              <input type='number' formControlName = "Quantity" PlaceHolder="How many units do you take or add?" class="form-control">
+             </div>
+             <div *ngIf="EventStat.Status === 'failed'" class="alert alert-danger"> Fail to add product. Please try again later.</div>
+             <div class="form-group mt-5">
+                <button  class= "btn btn-primary btn-lg form-control" (click)="OnSubmit()" type="submit" [disabled]="!eventForm.valid">Submit</button>
+             </div>
+
+      </div>
+    </div>
+   </form>
+ </div>
+</div>
